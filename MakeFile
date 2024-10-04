@@ -1,0 +1,18 @@
+CC=g++
+
+CFLAGS_DEBUG= -Og -g3 -ggdb -D_FORIFY_SOURCES=3 -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wunreachable-code -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel -Wtype-limits -Wwrite-strings -Werror=vla -D_EJUDGE_CLIENT_SIDE
+
+SOURCES=main.cpp Stack.cpp StackDB.cpp cpybytes.cpp hash.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=StackTest0
+
+all: $(SOURCES) $(EXECUTABLE)
+	
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+%.o : %.cpp
+	$(CC) -c $(CFLAGS_DEBUG) $< -o $@
+
+clean:
+	rm -rf *.o StackTest0

@@ -1,0 +1,22 @@
+########################## STACK INFO ##########################
+##CALLER STACK NAME: &stk
+## CALLER STACK POINTER: 0x7ffc4cf2d850
+## CALLER FILE    : 
+## CALLER FUNCTION: 
+## LINE          = 0
+## STACK SIZE    = 0
+## STACK CAPACIY = 4
+## STACK DATA: 0x63938d8814b0
+## DATA BUFFER: 
+### BOTTOM CANARY: 78
+# [126]  (1) (POISON)
+# [2122219134]  (2)
+# [2122219134]  (3)
+# [2122219134]  (4)
+### TOP CANARY: 78
+## HASH SUM: 6952128615861
+## ERRORS: 0000000000000000
+################################################################
+
+
+
