@@ -2,8 +2,8 @@
 #include "StackDB.h"
 
 
-static char POISON = '~';
-static char* POISON_PTR = &POISON; 
+static unsigned int POISON = 2122219134;
+static unsigned int* POISON_PTR = &POISON; 
 
 int StackInit(Stack_t* stk, size_t InitCapacity)
 {
@@ -24,6 +24,7 @@ int StackInit(Stack_t* stk, size_t InitCapacity)
     stk->capacity = InitCapacity;
 
     #ifndef NDEBUG
+    memset((char*)stk->data + 1*stk->elSize, POISON, stk->capacity*stk->elSize);
     stk->SructCanaryGuardTop = StructCanaryGuardTopREF;
     stk->StructCanaryGuardBot = StructCanaryGuardBotREF;
     *(int*)stk->data = DataCanaryGuardBotREF;
@@ -53,6 +54,8 @@ int StackDtor(Stack_t* stk)
 
 int StackPush(Stack_t* stk, void* elem)
 {
+    //STACK_ASSERT(stk);
+
     if(stk->size >= stk->capacity)
     {
         if(StackResize(stk, false) != 0)

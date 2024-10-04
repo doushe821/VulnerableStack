@@ -1,7 +1,7 @@
 #include "StackDB.h"
 
-static int POISON = '~';
-static int* POISON_PTR = &POISON; 
+static unsigned int POISON = 2122219134;
+static unsigned int* POISON_PTR = &POISON; 
 
 void StackAssert(Stack_t* stk, const char* stkName, const char* file, const char* func, int line)
 {
@@ -83,71 +83,8 @@ int StackError(Stack_t* stk)
     return errFlag;
 }
 
-int doStackDump(Stack_t* stk, const char* stkName, const char* file, const char* func, int line)
-{
-    FILE* log = fopen("log.txt", "w+b");
-    if(log == NULL)
-    {
-        stk->Error = FILE_CREATION_ERROR;
-        fclose(log);
-        return FILE_CREATION_ERROR;
-    }
-
-    fprintf(log, 
-    "########################## STACK INFO ##########################\n"
-    "## CALLER STACK: %p\n"
-    "## CALLER FILE    : %s\n"
-    "## CALLER FUNCTION: %s\n"
-    "## LINE          = %d\n"
-    "## STACK SIZE    = %zu\n"
-    "## STACK CAPACIY = %zu\n"
-    "## STACK DATA: %p\n",
-    stk, file, func, line, stk->size, stk->capacity, stk->data);
-
-    for(int i = 0; i < stk->capacity; i++)
-    {
-        //fprintf(stderr, "data element: %c\n", *((char*)stk->data + i*stk->elSize));
-        if(*((int*)((char*)stk->data + i*stk->size*stk->elSize)) == POISON)//TODO byte comparison
-        {
-            fprintf(log, "*[%c] (POISON), ", *((char*)stk->data + i*stk->elSize));
-        }
-        else
-        {
-            fprintf(log, "[%c], ", *((int*)((char*)stk->data + i*stk->size*stk->elSize)));
-        }
-
-        if((i + 1) % 5 == 0)
-        {
-            fprintf(log, " (%d)\n", i+1);
-        }
-    }
-    fprintf(log, "\n\n\n");
-    fprintf(log, 
-    "## STACK ERRORS: ");
-
-    u_int16_t byte = 2;
-    for(int i = 0; i < sizeof(u_int16_t)*8; i++)
-    {
-        fprintf(log, "%d", (byte & stk->Error) ? 1 : 0);
-        //fprintf(stderr, "%d", byte & stk->Error);
-        //fprintf(stderr, "%d", stk->Error);
-        byte *= 2;
-    }
-    
-    fprintf(log, "\n\n\n");
-
-
-    fclose(log);
-
-    return NO_ERRORS;
-}
-
-
 int VoidIntDump(Stack_t* stk)
-{
-    
-    //fprintf(stderr, "DUMP rofl\n");
-    
+{   
     FILE* log = fopen("log.txt", "a+b");
     
     if(log == NULL)
@@ -220,8 +157,6 @@ int VoidIntDump(Stack_t* stk)
     fprintf(log, "\n################################################################\n\n\n\n");
     
     fclose(log);
-    
-    //fprintf(stderr, "rofl DUMP SUCES\n");
     
     return NO_ERRORS;
 }
